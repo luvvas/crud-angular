@@ -63,6 +63,12 @@ export class ProductListComponent {
       this.editProductDetails(params)
     })
 
+    // handle delete button
+    let deleteButton = div.querySelector('.btn-danger')
+    //@ts-ignore
+    deleteButton?.addEventListener('click', () => {
+      this.deleteProductDetails(params)
+    })
     return div;
   }
 
@@ -72,5 +78,9 @@ export class ProductListComponent {
 
   editProductDetails(params: any) {
     this.router.navigate(['/crud/update-product/' + params.data.p_id])
+  }
+
+  deleteProductDetails(params: any) {
+    console.log('later')
   }
 }
