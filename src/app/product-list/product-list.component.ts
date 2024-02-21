@@ -19,7 +19,7 @@ export class ProductListComponent {
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
     { field: "p_name", headerName: "Product Name", sortable: true, headerClass: "header-cell" },
-    { field: "p_price", headerName: "Product Price", sortable: true, headerClass: "header-cell" },
+    { field: "p_price", headerName: "Product Price", sortable: true, headerClass: "header-cell", cellRenderer: this.priceCellRender.bind(this) },
     { field: "p_description", headerName: "Product Description", sortable: true, headerClass: "header-cell" },
     { field: "", headerName: "Actions", headerClass: "header-cell", width: 250, cellRenderer: this.actionRender.bind(this) }
   ];
@@ -82,5 +82,9 @@ export class ProductListComponent {
 
   deleteProductDetails(params: any) {
     console.log('later')
+  }
+
+  priceCellRender(params: any) {
+    return '$ ' + params.data.p_price
   }
 }
