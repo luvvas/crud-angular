@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CRUDService } from '../services/crud.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -12,13 +12,21 @@ export class ProductFormComponent {
   // @ts-ignore
   productForm: FormGroup;
 
-
   constructor(private crudService: CRUDService, 
               private formBuilder: FormBuilder,
-              private router: Router ) {}
+              private router: Router,
+              private activatedRoute: ActivatedRoute 
+              ) {}
 
   ngOnInit(): void {
     this.createProductForm()
+    let productId = '';
+    if(this.activatedRoute.snapshot.params['productId']) {
+      productId = this.activatedRoute.snapshot.params['productId'];
+      if(productId !== '') {
+        this.loadProductDetails(productId)
+      }
+    }
   }
 
   createProductForm() {
@@ -30,7 +38,7 @@ export class ProductFormComponent {
   }
 
   createProduct(values: any, isUpdate: any) {
-    console.log(values);
+    // console.log(values);
     let formData = new FormData();
     formData.append('name', values.name)
     formData.append('description', values.description)
@@ -46,5 +54,11 @@ export class ProductFormComponent {
         }
       })
     }
+  }
+
+  loadProductDetails(productId: any) {
+    this.crudService.loadProductInfo(productId).subscribe(res => {
+      
+    })
   }
 }
