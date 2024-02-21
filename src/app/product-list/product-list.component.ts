@@ -1,3 +1,5 @@
+import { CRUDService } from '../services/crud.service';
+
 import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 
@@ -20,4 +22,8 @@ export class ProductListComponent {
     { field: "price" },
     { field: "electric" }
   ];
+
+  constructor(private crudService: CRUDService) {
+
+  }
 }
