@@ -49,18 +49,28 @@ export class ProductListComponent {
 
     div.innerHTML = htmlCode;
 
+    // handle view button
     let viewButton = div.querySelector('.btn-success')
     //@ts-ignore
     viewButton?.addEventListener('click', () => {
       this.viewProductDetails(params)
     })
+  
+    // handle edit button
+    let editButton = div.querySelector('.btn-warning')
+    //@ts-ignore
+    editButton?.addEventListener('click', () => {
+      this.editProductDetails(params)
+    })
 
-    
     return div;
   }
 
   viewProductDetails(params: any) {
-    console.log(params)
     this.router.navigate(['/crud/view-product-details/' + params.data.p_id])
+  }
+
+  editProductDetails(params: any) {
+    this.router.navigate(['/crud/update-product/' + params.data.p_id])
   }
 }
