@@ -3,6 +3,7 @@ import { CRUDService } from '../services/crud.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -81,7 +82,29 @@ export class ProductListComponent {
   }
 
   deleteProductDetails(params: any) {
-    console.log('later')
+    const that = this;
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        that.crudService.deleteProduct(params.data.p_id).subscribe(res => {
+          if(res.result === 'success') {
+            this.getProductList()
+            Swal.fire(
+              "Deleted!",
+              "Your file has been deleted.",
+              "success"
+            );
+          }
+        })
+      }
+    });
   }
 
   priceCellRender(params: any) {
