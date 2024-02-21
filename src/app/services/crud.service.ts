@@ -26,4 +26,9 @@ export class CRUDService {
     const url = environment.API_EndPoint + 'view_one.php?id=' + productId;
     return this.httpClient.get<Product>(url).pipe(map(data => data))
   }
+
+  updateProductDetails(data: any): Observable<HttpResponse> {
+    const url = environment.API_EndPoint + 'update.php';
+    return this.httpClient.post<HttpResponse>(url, data).pipe(map(data => data))
+  }
 }

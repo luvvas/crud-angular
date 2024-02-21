@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductFormComponent {
   // @ts-ignore
   productForm: FormGroup;
+  productId: any;
+  buttonText = 'Create Product'
 
   constructor(private crudService: CRUDService, 
               private formBuilder: FormBuilder,
@@ -37,28 +39,40 @@ export class ProductFormComponent {
     })
   }
 
-  createProduct(values: any, isUpdate: any) {
-    // console.log(values);
+  createProduct(values: any) {
     let formData = new FormData();
     formData.append('name', values.name)
     formData.append('description', values.description)
     formData.append('price', values.price)
 
-    if(isUpdate) {
-      // for update product details
+    if(this.productId) {
+      formData.append('id', this.productId)
+      this.crudService.updateProductDetails(formData).subscribe(res => {
+        if (res.result === 'success') {
+          this.navigateTo('/crud/product-list')
+        }
+      })
+
     }  else {
       this.crudService.createProduct(formData).subscribe(res => {
         if (res.result === 'success') {
-          console.log('eeee')
-          this.router.navigate(['/crud/product-list'])
+          this.navigateTo('/crud/product-list')
         }
       })
     }
   }
 
   loadProductDetails(productId: any) {
+    this.buttonText = 'Update Product'
     this.crudService.loadProductInfo(productId).subscribe(res => {
-      
+      this.productForm.controls?.['name'].setValue(res.p_name)
+      this.productForm.controls?.['description'].setValue(res.p_description)
+      this.productForm.controls?.['price'].setValue(res.p_price)
+      this.productId = res.p_id;
     })
+  }
+
+  navigateTo(route: any) {
+    this.router.navigate([route]);
   }
 }
